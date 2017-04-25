@@ -117,12 +117,6 @@
 
         <li>
 
-            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan"></span>short</span>
-
-        </li>
-
-        <li>
-
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">short.</span>prototype</span>
 
         </li>
@@ -136,64 +130,6 @@
             <a class="apidocElementLiA" href="#apidoc.element.short.prototype.Model">
             function <span class="apidocSignatureSpan">short.prototype.</span>Model
             <span class="apidocSignatureSpan">(mongooseModel)</span>
-            </a>
-
-        </li>
-
-    </ol></li>
-
-    <li class="apidocModuleLi"><a href="#apidoc.module.short.short">module short.short</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.short.short.connect">
-            function <span class="apidocSignatureSpan">short.short.</span>connect
-            <span class="apidocSignatureSpan">(mongodb)</span>
-            </a>
-
-        </li>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.short.short.generate">
-            function <span class="apidocSignatureSpan">short.short.</span>generate
-            <span class="apidocSignatureSpan">(document)</span>
-            </a>
-
-        </li>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.short.short.hits">
-            function <span class="apidocSignatureSpan">short.short.</span>hits
-            <span class="apidocSignatureSpan">(hash)</span>
-            </a>
-
-        </li>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.short.short.list">
-            function <span class="apidocSignatureSpan">short.short.</span>list
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.short.short.retrieve">
-            function <span class="apidocSignatureSpan">short.short.</span>retrieve
-            <span class="apidocSignatureSpan">(hash)</span>
-            </a>
-
-        </li>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.short.short.update">
-            function <span class="apidocSignatureSpan">short.short.</span>update
-            <span class="apidocSignatureSpan">(hash, updates)</span>
             </a>
 
         </li>
@@ -329,21 +265,21 @@ console.log(mongodbDoc);
   return ShortURL.find({});
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-short.connect(&#x27;mongodb://localhost/short&#x27;);
+  * for full example please see @thinkroth &#x27;s work
+  * Merge pull request #15 from hudgins/master
+  * Fix for retrieve(hash, callback) throwing due to null options.
 
-short.connection.on(&#x27;error&#x27;, function(error) {
-  throw new Error(error);
-});
+1.4.1 / 2012-01-23
+==================
 
-// promise to retrieve all shortened URLs
-listURLsPromise = short.<span class="apidocCodeKeywordSpan">list</span>();
+  * [API] short.<span class="apidocCodeKeywordSpan">list</span>()
 
-// output all resulting shortened url db docs
-listURLsPromise.then(function(URLsDocument) {
-  console.log(&#x27;&#x3e;&#x3e; listing (%d) Shortened URLS:&#x27;, URLsDocument.length);
-  console.log(URLsDocument);
-  process.exit(0);
-}, function(error) {
+1.4.0 / 2012-01-20
+==================
+
+  * Added atomic logging (thinkroth/master) / options.hash
+
+1.3.1 / 2012-01-18
 ...</pre></li>
     </ul>
 
@@ -444,8 +380,6 @@ var updatePromise = short.<span class="apidocCodeKeywordSpan">update</span>(hash
 
 
 
-
-
 </div>
 
 <div class="apidocSectionDiv">
@@ -472,248 +406,6 @@ var updatePromise = short.<span class="apidocCodeKeywordSpan">update</span>(hash
 
 exports.ShortURL = new wrapper.<span class="apidocCodeKeywordSpan">Model</span>(mongoose.model(&#x27;ShortURL&#x27;, ShortURLSchema
 ));
-...</pre></li>
-    </ul>
-
-
-</div>
-
-<div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.short.short" id="apidoc.module.short.short">module short.short</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.short.short.connect" id="apidoc.element.short.short.connect">
-        function <span class="apidocSignatureSpan">short.short.</span>connect
-        <span class="apidocSignatureSpan">(mongodb)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">connect = function (mongodb) {
-  if (mongoose.connection.readyState === 0)
-    mongoose.connect(mongodb);
-
-  exports.connection = mongoose.connection;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-**Generates a Shortened URL Doc, then retrieves it for demo:**
-
-```javascript
-var shortURLPromise
-  , short = require(&#x27;../lib/short&#x27;);
-
-// connect to mongodb
-short.<span class="apidocCodeKeywordSpan">connect</span>(&#x27;mongodb://localhost/short&#x27;);
-
-short.connection.on(&#x27;error&#x27;, function(error) {
-  throw new Error(error);
-});
-
-// promise to generate a shortened URL.
-var shortURLPromise = short.generate({
-...</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.short.short.generate" id="apidoc.element.short.short.generate">
-        function <span class="apidocSignatureSpan">short.short.</span>generate
-        <span class="apidocSignatureSpan">(document)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">generate = function (document) {
-  var generatePromise
-    , promise = new Promise();
-
-  document[&#x27;data&#x27;] = document.data || null;
-
-  // hash was specified, so we should always honor it
-  if (document.hasOwnProperty(&#x27;hash&#x27;)) {
-    generatePromise = ShortURL.create(document);
-  } else {
-    document[&#x27;hash&#x27;] = ID.store(document.URL);
-    generatePromise = ShortURL.findOrCreate({URL : document.URL}, document, {});
-  }
-
-  generatePromise.then(function(ShortURLObject) {
-    promise.resolve(ShortURLObject);
-  }, function(error) {
-    promise.reject(error, true);
-  });
-
-  return promise;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-short.connect(&#x27;mongodb://localhost/short&#x27;);
-
-short.connection.on(&#x27;error&#x27;, function(error) {
-throw new Error(error);
-});
-
-// promise to generate a shortened URL.
-var shortURLPromise = short.<span class="apidocCodeKeywordSpan">generate</span>({
-URL : &#x27;http://nodejs.org/&#x27;
-});
-
-// gets back the short url document, and then retrieves it
-shortURLPromise.then(function(mongodbDoc) {
-console.log(&#x27;&#x3e;&#x3e; created short URL:&#x27;);
-console.log(mongodbDoc);
-...</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.short.short.hits" id="apidoc.element.short.short.hits">
-        function <span class="apidocSignatureSpan">short.short.</span>hits
-        <span class="apidocSignatureSpan">(hash)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">hits = function (hash) {
-  var promise = new Promise();
-  var query = { hash : hash }
-    , options = { multi: true };
-  var retrievePromise = ShortURL.findOne(query);
-  retrievePromise.then(function(ShortURLObject) {
-    if (ShortURLObject &#x26;&#x26; ShortURLObject !== null) {
-      promise.resolve(ShortURLObject.hits);
-    } else {
-      promise.reject(new Error(&#x27;MongoDB - Cannot find Document&#x27;), true);
-    };
-  }, function(error) {
-    promise.reject(error, true);
-  });
-  return promise;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.short.short.list" id="apidoc.element.short.short.list">
-        function <span class="apidocSignatureSpan">short.short.</span>list
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">list = function () {
-  return ShortURL.find({});
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-short.connect(&#x27;mongodb://localhost/short&#x27;);
-
-short.connection.on(&#x27;error&#x27;, function(error) {
-  throw new Error(error);
-});
-
-// promise to retrieve all shortened URLs
-listURLsPromise = short.<span class="apidocCodeKeywordSpan">list</span>();
-
-// output all resulting shortened url db docs
-listURLsPromise.then(function(URLsDocument) {
-  console.log(&#x27;&#x3e;&#x3e; listing (%d) Shortened URLS:&#x27;, URLsDocument.length);
-  console.log(URLsDocument);
-  process.exit(0);
-}, function(error) {
-...</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.short.short.retrieve" id="apidoc.element.short.short.retrieve">
-        function <span class="apidocSignatureSpan">short.short.</span>retrieve
-        <span class="apidocSignatureSpan">(hash)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">retrieve = function (hash) {
-  var promise = new Promise();
-  var query = { hash : hash }
-    , update = { $inc: { hits: 1 } }
-    , options = { multi: true };
-  var retrievePromise = ShortURL.findOne(query);
-  ShortURL.update( query, update , options , function (){ } );
-  retrievePromise.then(function(ShortURLObject) {
-    if (ShortURLObject &#x26;&#x26; ShortURLObject !== null) {
-      promise.resolve(ShortURLObject);
-    } else {
-      promise.reject(new Error(&#x27;MongoDB - Cannot find Document&#x27;), true);
-    };
-  }, function(error) {
-    promise.reject(error, true);
-  });
-  return promise;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-
-// gets back the short url document, and then retrieves it
-shortURLPromise.then(function(mongodbDoc) {
-console.log(&#x27;&#x3e;&#x3e; created short URL:&#x27;);
-console.log(mongodbDoc);
-console.log(&#x27;&#x3e;&#x3e; retrieving short URL: %s&#x27;, mongodbDoc.hash);
-short.<span class="apidocCodeKeywordSpan">retrieve</span>(mongodbDoc.hash).then(function(result) {
-  console.log(&#x27;&#x3e;&#x3e; retrieve result:&#x27;);
-  console.log(result);
-  process.exit(0);
-}, function(error) {
-  if (error) {
-    throw new Error(error);
-  }
-...</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.short.short.update" id="apidoc.element.short.short.update">
-        function <span class="apidocSignatureSpan">short.short.</span>update
-        <span class="apidocSignatureSpan">(hash, updates)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">update = function (hash, updates) {
-  var promise = new Promise();
-  ShortURL.findOne({hash: hash}, function(err, doc) {
-    if (updates.URL) {
-      doc.URL = updates.URL;
-    }
-    if (updates.data) {
-      doc.data = extend(doc.data, updates.data);
-      doc.markModified(&#x27;data&#x27;); //Required by mongoose, as data is of Mixed type
-    }
-    doc.save(function(err, updatedObj, numAffected) {
-      if (err) {
-        promise.reject(new Error(&#x27;MongoDB - Cannot save updates&#x27;), true);
-      } else {
-        promise.resolve(updatedObj);
-      }
-    });
-  });
-  return promise;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-});
-```
-
-**Updating the URL or the data fields of an existing Short URL hash**
-
-```javascript
-// Basically, update works like this
-var updatePromise = short.<span class="apidocCodeKeywordSpan">update</span>(hash, updateData);
-// hash =&#x3e; Short url hashcode generated using short.generate()
-// updateData =&#x3e; An object consisting of the new URL and/or the new data object.
-//               If a key already exists in the current data object, it&#x27;s value is updated,
-//               otherwise, it is added and saved to the data object
-
-//This function returns a promise which on resolution returns the new updated object as an argument.
-```
 ...</pre></li>
     </ul>
 
