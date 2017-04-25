@@ -1,6 +1,6 @@
 # npmdoc-short
 
-#### api documentation for  [short (v2.6.0)](http://edwardhotchkiss.github.com/short)  [![npm package](https://img.shields.io/npm/v/npmdoc-short.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-short) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-short.svg)](https://travis-ci.org/npmdoc/node-npmdoc-short)
+#### basic api documentation for  [short (v2.6.0)](http://edwardhotchkiss.github.com/short)  [![npm package](https://img.shields.io/npm/v/npmdoc-short.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-short) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-short.svg)](https://travis-ci.org/npmdoc/node-npmdoc-short)
 
 #### Node.js URL Shortener backed by Mongoose.js
 
@@ -106,7 +106,8 @@
     "scripts": {
         "test": "vows test/*.test.js --spec"
     },
-    "version": "2.6.0"
+    "version": "2.6.0",
+    "bin": {}
 }
 ```
 
